@@ -6,6 +6,8 @@ import com.cherries.ppmtool.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProjectService  {
     @Autowired
@@ -21,7 +23,14 @@ public class ProjectService  {
 
     }
     public Project findProjectByIdentifier(String projectId){
-        return projectRepository.findByProjectIdentifier(projectId.toUpperCase());
+        Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
+        if(project == null){
+            throw new ProjectIdException("Project ID '" + projectId.toUpperCase() + "' does not exits");
+        }
+        return project;
+    }
+    public Iterable<Project> findAllProjects(){
+        return projectRepository.findAll();
     }
 
 }

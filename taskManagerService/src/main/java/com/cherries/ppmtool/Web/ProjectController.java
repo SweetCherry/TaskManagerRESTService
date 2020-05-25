@@ -27,7 +27,7 @@ public class ProjectController {
         if(errorMap!=null)
             return errorMap;
 
-        Project project1 = projectService.savOrUpdateProject(project);
+        Project project1 = projectService.saveOrUpdateProject(project);
         return new ResponseEntity<Project>(project, HttpStatus.CREATED);
     }
 
@@ -45,5 +45,6 @@ public class ProjectController {
         projectService.deleteProjectByIdentifier(projectId);
         return new ResponseEntity<String>("Project with ID'" + projectId + "' was deleted",HttpStatus.OK);
     }
+
 
 }

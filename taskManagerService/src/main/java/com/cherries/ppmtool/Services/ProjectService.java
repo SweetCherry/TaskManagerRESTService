@@ -6,7 +6,6 @@ import com.cherries.ppmtool.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class ProjectService  {
@@ -31,6 +30,14 @@ public class ProjectService  {
     }
     public Iterable<Project> findAllProjects(){
         return projectRepository.findAll();
+    }
+    public void deleteProjectByIdentifier(String identifier){
+        Project project = projectRepository.findByProjectIdentifier(identifier.toUpperCase());
+        if(project == null){
+            throw new ProjectIdException("Cannot delete project with ID '" + identifier.toUpperCase() + "'. This project does not exists");
+        }
+        projectRepository.delete(project);
+
     }
 
 }

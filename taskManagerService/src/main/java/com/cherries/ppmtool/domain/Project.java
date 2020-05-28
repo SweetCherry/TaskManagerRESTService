@@ -1,6 +1,7 @@
 package com.cherries.ppmtool.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -32,6 +33,9 @@ public class Project {
     private Date create_At;
     @JsonFormat(pattern = "yyyy-mm-dd HH:MM")
     private Date updated_At;
+    //project owning backlog
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy="project")
+    private Backlog backlog;
 
     @PrePersist
     protected void onCreate(){

@@ -18,24 +18,26 @@ public class ProjectService  {
 
     public Project saveOrUpdateProject(Project project){
         try {
-            String projectIdentifierUpperCase = project.getProjectIdentifier().toUpperCase();
-            project.setProjectIdentifier(projectIdentifierUpperCase);
-            if(project.getId()==null){
-                Backlog backlog = new Backlog();
-                project.setBacklog(backlog);
-                backlog.setProject(project);
-                backlog.setProjectIdentifier(projectIdentifierUpperCase);
-            }else{
-                project.setBacklog(backlogRepository.findByProjectIdentifier(projectIdentifierUpperCase));
-            }
-
-
+            project.setProjectIdentifier( project.getProjectIdentifier().toUpperCase());
+            this.setBacklogToProject(project);
             return projectRepository.save(project);
         }catch (Exception e){
             throw new ProjectIdException("Project ID '"+project.getProjectIdentifier().toUpperCase()+"' already exists");
         }
 
     }
+    private void setBacklogToProject(Project project){
+        String projectIdentifierUpperCase = project.getProjectIdentifier().toUpperCase();
+        if(project.getId()==null){
+            Backlog backlog = new Backlog();
+            project.setBacklog(backlog);
+            backlog.setProject(project);
+            backlog.setProjectIdentifier(projectIdentifierUpperCase);
+        }else{
+            project.setBacklog(backlogRepository.findByProjectIdentifier(projectIdentifierUpperCase));
+        }
+    }
+
     public Project findProjectByIdentifier(String projectId){
         Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
         if(project == null){

@@ -5,6 +5,7 @@ import com.cherries.ppmtool.domain.Project;
 import com.cherries.ppmtool.domain.ProjectTask;
 import com.cherries.ppmtool.exceptions.ProjectNotFoundException;
 import com.cherries.ppmtool.repositories.BacklogRepository;
+import com.cherries.ppmtool.repositories.ProjectRepository;
 import com.cherries.ppmtool.repositories.ProjectTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ public class ProjectTaskService {
 
     @Autowired
     private ProjectTaskRepository projectTaskRepository;
+    @Autowired
+    private ProjectRepository projectRepository;
 
     public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask) {
         //PTs to be added to specific project, not null
@@ -26,10 +29,10 @@ public class ProjectTaskService {
             //set the bl to pt
             projectTask.setBacklog(backlog);
             //sequence
-            Integer backlogSequence = backlog.getPTSequence();
-            backlogSequence++;
+            backlog.setPTSequence(backlog.getPTSequence() + 1); ;
+
             //Add sedquence to project task
-            projectTask.setProjectSequence(projectIdentifier + "-" + backlogSequence);
+            projectTask.setProjectSequence(projectIdentifier + "-" + backlog.getPTSequence());
             projectTask.setProjectIdentifier(projectIdentifier);
             //priority
             if (projectTask.getPriority() == null || projectTask.getPriority() == 0) {
@@ -45,6 +48,11 @@ public class ProjectTaskService {
     }
 
     public List<ProjectTask> findBacklogById(String id) {
-        return projectTaskRepository.findByProjectIdentifierOrderByPriority(id);
+        try{
+            Project project  = projectRepository.findByProjectIdentifier(id);
+            return projectTaskRepository.findByProjectIdentifierOrderByPriorityDesc(project.getProjectIdentifier());
+        }catch (Exception e){
+            throw new ProjectNotFoundException("Project ID '" + id.toUpperCase() + "' doesn't exists");
+        }
     }
 }

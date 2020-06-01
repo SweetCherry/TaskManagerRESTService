@@ -3,6 +3,7 @@ package com.cherries.ppmtool.Web;
 import com.cherries.ppmtool.Services.MapValidationError;
 import com.cherries.ppmtool.Services.ProjectService;
 import com.cherries.ppmtool.domain.Project;
+import com.cherries.ppmtool.domain.ProjectTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +47,7 @@ public class ProjectController {
         projectService.deleteProjectByIdentifier(projectId);
         return new ResponseEntity<String>("Project with ID'" + projectId + "' was deleted",HttpStatus.OK);
     }
+
 
 
 }

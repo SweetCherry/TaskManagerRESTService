@@ -23,7 +23,7 @@ public class ProjectTaskService {
     private ProjectRepository projectRepository;
 
     public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask) {
-        //PTs to be added to specific project, not null
+        //TODO refactor this
         try {
             Backlog backlog = backlogRepository.findByProjectIdentifier(projectIdentifier);
             //set the bl to pt
@@ -54,5 +54,21 @@ public class ProjectTaskService {
         }catch (Exception e){
             throw new ProjectNotFoundException("Project ID '" + id.toUpperCase() + "' doesn't exists");
         }
+    }
+    public ProjectTask findPTProjectBySequence(String backlog_id, String pt_id){
+        //TODO check backlog relation with pt_id
+        Backlog backlog = backlogRepository.findByProjectIdentifier(backlog_id);
+        if(backlog == null){
+            throw new ProjectNotFoundException("Project ID '" + backlog_id.toUpperCase() + "' doesn't exists");
+        }
+        ProjectTask projectTask = projectTaskRepository.findByProjectSequence(pt_id);
+        if(projectTask == null){
+            throw new ProjectNotFoundException("Project Task '" + pt_id.toUpperCase() + "' not found");
+        }
+        if(!projectTask.getProjectIdentifier().equals(backlog_id)){
+            throw new ProjectNotFoundException("Project Task '" + pt_id.toUpperCase() + "' does not exists in project: '" + backlog_id + "'" );
+        }
+
+        return projectTask;
     }
 }

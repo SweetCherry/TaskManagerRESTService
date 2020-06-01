@@ -55,8 +55,8 @@ public class ProjectTaskService {
             throw new ProjectNotFoundException("Project ID '" + id.toUpperCase() + "' doesn't exists");
         }
     }
+
     public ProjectTask findPTProjectBySequence(String backlog_id, String pt_id){
-        //TODO check backlog relation with pt_id
         Backlog backlog = backlogRepository.findByProjectIdentifier(backlog_id);
         if(backlog == null){
             throw new ProjectNotFoundException("Project ID '" + backlog_id.toUpperCase() + "' doesn't exists");
@@ -70,5 +70,11 @@ public class ProjectTaskService {
         }
 
         return projectTask;
+    }
+
+    public ProjectTask updateByProjectSequence(ProjectTask updatedTask, String backlog_id, String pt_id){
+        ProjectTask projectTask = projectTaskRepository.findByProjectSequence(pt_id);
+        projectTask = updatedTask;
+        return projectTaskRepository.save(projectTask);
     }
 }

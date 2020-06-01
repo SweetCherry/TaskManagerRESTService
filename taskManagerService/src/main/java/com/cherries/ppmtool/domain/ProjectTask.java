@@ -1,6 +1,7 @@
 package com.cherries.ppmtool.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -19,9 +20,14 @@ public class ProjectTask {
     private String summary;
     private String acceptanceCriteria;
     private String status;
-    private String priority;
+    private Integer priority;
     private String dueDate;
-    //manytomany with backlog
+    //refresh i can delete project task belongs to backlog object and this will refresh backlog that that doesn't exits
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @JoinColumn(name="backlog_id", updatable = false, nullable = false)
+    @JsonIgnore
+    private Backlog backlog;
+
     @Column(updatable = false)
     private String projectIdentifier;
     @JsonFormat(pattern = "yyyy-mm-dd HH:MM")

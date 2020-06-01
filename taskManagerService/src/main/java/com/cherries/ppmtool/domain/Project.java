@@ -35,6 +35,7 @@ public class Project {
     private Date updated_At;
     //project owning backlog
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy="project")
+    @JsonIgnore
     private Backlog backlog;
 
     @PrePersist

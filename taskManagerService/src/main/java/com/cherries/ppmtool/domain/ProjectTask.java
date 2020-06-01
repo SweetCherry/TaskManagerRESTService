@@ -23,7 +23,7 @@ public class ProjectTask {
     private Integer priority;
     private String dueDate;
     //refresh i can delete project task belongs to backlog object and this will refresh backlog that that doesn't exits
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="backlog_id", updatable = false, nullable = false)
     @JsonIgnore
     private Backlog backlog;

@@ -73,10 +73,11 @@ public class ProjectTaskService {
     }
 
     public ProjectTask updateByProjectSequence(ProjectTask updatedTask, String backlog_id, String pt_id){
-
+        //TODO better exception for null backlog_id or pt_id
         ProjectTask projectTask = findPTProjectBySequence(backlog_id, pt_id);
-        projectTask = updatedTask;
-        return projectTaskRepository.save(projectTask);
+        //projectTask = updatedTask;
+        updatedTask.setId(projectTask.getId());
+        return projectTaskRepository.save(updatedTask);
     }
     public void deleteByProjectSequence(String backlog_id, String pt_id){
         ProjectTask projectTask = findPTProjectBySequence(backlog_id, pt_id);

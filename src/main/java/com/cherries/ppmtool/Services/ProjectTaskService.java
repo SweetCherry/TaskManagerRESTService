@@ -50,7 +50,7 @@ public class ProjectTaskService {
     public List<ProjectTask> findBacklogById(String id) {
         try{
             Project project  = projectRepository.findByProjectIdentifier(id);
-            return projectTaskRepository.findByProjectIdentifierOrderByPriorityDesc(project.getProjectIdentifier());
+            return projectTaskRepository.findByProjectIdentifierOrderByPriority(project.getProjectIdentifier());
         }catch (Exception e){
             throw new ProjectNotFoundException("Project ID '" + id.toUpperCase() + "' doesn't exists");
         }
